@@ -1,5 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { requireCustomer } from "@/lib/auth/session";
+import { idsProdutosLiberados } from "@/lib/data/acesso";
+import { CATALOGO } from "@/lib/config/catalogo";
+import { precoBRL } from "@/lib/config/ofertas";
 
 const CAPAS = {
   "039": "/modelos/001-arvore-compacta-de-2-niveis/preview.png",
@@ -58,7 +62,14 @@ function CapaProjeto({ codigo }: { codigo: keyof typeof CAPAS }) {
 
 export const metadata = { title: "Projetos · Móveis para Gatos" };
 
-export default function Projetos() {
+export default async function Projetos() {
+  // Esta página é só o acervo 3D de gatos (hardcoded). Produtos que o
+  // cliente não tem viram uma prévia no fim — nunca somem sem explicação e
+  // nunca entram misturados na grade de gatos.
+  const cliente = await requireCustomer();
+  const liberados = await idsProdutosLiberados(cliente.id);
+  const outrosProdutos = CATALOGO.filter((p) => p.slug !== "acervo-3d-gatos");
+
   return (
     <main className="envolucro">
       <div className="pagTopo">
@@ -1135,6 +1146,83 @@ export default function Projetos() {
           </article>
         </div>
       </section>
+
+      {outrosProdutos.length > 0 && (
+        <section className="iniSecao" aria-labelledby="outros-catalogos-titulo">
+          <div className="iniSecaoTopo">
+            <h2 id="outros-catalogos-titulo" className="iniSecaoTitulo">
+              Outros catálogos
+            </h2>
+            <span className="iniSecaoConta">
+              {outrosProdutos.length}{" "}
+              {outrosProdutos.length === 1 ? "produto" : "produtos"}
+            </span>
+          </div>
+          <p className="iniSecaoDescricao">
+            Este acervo é só de móveis para gatos. Os catálogos abaixo são
+            produtos separados, com fichas próprias — não fazem parte deste
+            acervo 3D.
+          </p>
+
+          <div className="vitGrade">
+            {outrosProdutos.map((produto) => {
+              const temAcesso =
+                produto.caktoProductId !== null &&
+                liberados.has(produto.caktoProductId);
+
+              return temAcesso ? (
+                <Link
+                  key={produto.slug}
+                  className="vitCard"
+                  href={`/produto/${produto.slug}`}
+                >
+                  <div className="vitCapa">
+                    <Image
+                      src={produto.capa}
+                      alt=""
+                      fill
+                      sizes="(max-width: 700px) 100vw, 340px"
+                    />
+                  </div>
+                  <div className="vitCorpo">
+                    <span className="vitTitulo">{produto.titulo}</span>
+                    <p className="vitSub">{produto.subtitulo}</p>
+                    <span className="vitAcao">
+                      Abrir produto <span aria-hidden>→</span>
+                    </span>
+                  </div>
+                </Link>
+              ) : (
+                <a
+                  key={produto.slug}
+                  className="vitCard vitCard--oferta"
+                  href={produto.aVenda?.url ?? `/produto/${produto.slug}`}
+                >
+                  <div className="vitCapa">
+                    <Image
+                      src={produto.capa}
+                      alt=""
+                      fill
+                      sizes="(max-width: 700px) 100vw, 340px"
+                    />
+                    <span className="vitSelo">Prévia · você ainda não tem</span>
+                  </div>
+                  <div className="vitCorpo">
+                    <span className="vitTitulo">{produto.titulo}</span>
+                    <p className="vitSub">{produto.subtitulo}</p>
+                    <span className="vitAcao">
+                      {produto.aVenda
+                        ? precoBRL(produto.aVenda.precoBRL)
+                        : "Conhecer"}{" "}
+                      <span aria-hidden>→</span>
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

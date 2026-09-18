@@ -58,7 +58,10 @@ export const CATALOGO: Produto[] = [
     titulo: "Biblioteca de Fichas Visuais — Móveis para Gatos",
     subtitulo:
       "Fichas visuais A4 com medidas sugeridas, peças e montagem. Projetos selecionados também incluem visualização 3D interativa.",
-    capa: "/modelos/039-arvore-compacta-2-niveis/preview.png",
+    // Mockup "header/plano completo" real do produto (o mesmo usado na
+    // página de vendas), não uma foto de peça avulsa — pedido do usuário em
+    // 18/09/2026: capa do card tem que ser o hero, não um preview de projeto.
+    capa: "/vitrine/hero-gatos.webp",
     itens: [
       {
         slug: "acervo",
@@ -66,7 +69,10 @@ export const CATALOGO: Produto[] = [
         titulo: "Todos os projetos",
         descricao:
           "Móveis e playgrounds em 3D, agrupados por família. Cada projeto abre com visualizador interativo, peças, medidas adaptáveis, montagem e calculadora de custos.",
-        capa: "/modelos/041-torre-alta-vertical/preview.png",
+        // Caminho corrigido em 18/09/2026: a pasta "041-torre-alta-vertical"
+        // não existe mais — os projetos foram renumerados e a torre alta
+        // vertical real é "003-torre-alta-vertical" (imagem quebrada antes).
+        capa: "/modelos/003-torre-alta-vertical/preview.png",
         href: "/projetos",
       },
       // Sem bônus por enquanto. Para adicionar um, copie um item com
@@ -74,6 +80,35 @@ export const CATALOGO: Produto[] = [
     ],
     // Sem `aVenda`: este é o produto que o cliente de teste já tem liberado;
     // não há checkout público ainda.
+  },
+  {
+    slug: "50-projetos-moveis-caes",
+    // Tem que ser IDÊNTICO ao products.cakto_product_id no Supabase
+    // (mesmo projeto acervo-3d-membros, linha inserida em 18/09/2026 —
+    // ver CONTEXTO-INTEGRACAO-AREA-MEMBROS.md em "50 Projetos para pets").
+    caktoProductId: "8a2469fd-e827-4364-bffd-79e453db9109",
+    titulo: "50 Projetos de Móveis para Cães",
+    subtitulo:
+      "Biblioteca visual com 50 projetos de casinhas, camas, comedouros e acessórios para planejar, adaptar e construir.",
+    // Mesmo mockup usado no header e no "plano completo" do site de vendas
+    // real (dist/index.html referencia hero-header-transparent-*.png) — não
+    // o hero-header.png com fundo, que é uma variante não usada no site.
+    capa: "/vitrine/hero-caes.png",
+    itens: [
+      {
+        slug: "acervo",
+        tipo: "principal",
+        titulo: "Todos os projetos",
+        descricao:
+          "Fichas técnicas com lista de peças, medidas e passo a passo de montagem.",
+        capa: "/vitrine/hero-caes.png",
+        href: "/produto/50-projetos-moveis-caes",
+      },
+    ],
+    // aVenda: ainda não há entitlement de teste para este produto — o card
+    // aparece como oferta até a compra real liberar o acesso. Link é a
+    // oferta VIP (padrão) cadastrada na Cakto, id "zov8af3".
+    aVenda: { precoBRL: 29.9, url: "https://pay.cakto.com.br/zov8af3" },
   },
 ];
 

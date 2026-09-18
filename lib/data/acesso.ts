@@ -18,3 +18,12 @@ export async function idsProdutosLiberados(
       .filter((id): id is string => Boolean(id))
   );
 }
+
+/** Confere entitlement pelo slug canônico gravado em products. */
+export async function temAcessoAoProduto(
+  customerId: string,
+  produtoSlug: string
+): Promise<boolean> {
+  const produtos = await getCustomerProducts(customerId);
+  return produtos.some((produto) => produto.slug === produtoSlug);
+}

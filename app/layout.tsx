@@ -1,8 +1,19 @@
 import type { Metadata, Viewport } from "next";
 import { Navegacao } from "./navegacao";
 import { Cabecalho } from "./cabecalho";
+import { AlternarTema } from "./alternar-tema";
 import "./globals.css";
 import "./inicio.css";
+
+// Aplica o tema salvo ANTES da primeira pintura — sem isso a tela nasce
+// clara e pisca pra escura um instante depois em quem já escolheu dark.
+// Só pode rodar assim (script inline síncrono no <head>), não em useEffect.
+const SCRIPT_TEMA = `
+try {
+  var t = localStorage.getItem("tema");
+  if (t === "dark") document.documentElement.dataset.theme = "dark";
+} catch (e) {}
+`;
 
 export const metadata: Metadata = {
   title: "Móveis para Gatos",
@@ -19,6 +30,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_TEMA }} />
+      </head>
       <body>
         <Cabecalho>
           <div className="envolucro iniTopoInterno">
@@ -34,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <span className="iniMarcaSub">FICHAS VISUAIS</span>
               </span>
             </a>
+            <AlternarTema />
           </div>
         </Cabecalho>
 

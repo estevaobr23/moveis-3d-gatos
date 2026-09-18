@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "validar": "tsc --noEmit",
+    "preparar:caes": "node scripts/preparar-fichas-caes.mjs",
     "validar:projetos": "node scripts/validar-projetos-tecnicos.mjs",
     "gerar:segmentacoes": "node scripts/gerar-segmentacoes-locais.mjs",
     "auditar:segmentacoes": "node scripts/auditar-segmentacoes-locais.mjs"

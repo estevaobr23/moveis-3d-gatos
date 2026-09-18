@@ -7,7 +7,9 @@ import { idsProdutosLiberados } from "@/lib/data/acesso";
 import { acharProduto, CATALOGO } from "@/lib/config/catalogo";
 import { listarFichas } from "@/lib/data/fichas";
 import { listarProjetos3D } from "@/lib/data/projetos3d";
+import { FICHAS_CAES, PRODUTO_CAES_SLUG } from "@/lib/data/fichas-caes";
 import { AbasConteudo } from "./abas-conteudo";
+import { GaleriaCaes } from "./galeria-caes";
 import "../../inicio.css";
 
 type Params = { slug: string };
@@ -55,8 +57,20 @@ export default async function PaginaProduto({
   // 3D) — mostrados como abas em vez do card único de "Conteúdo principal".
   // Outros produtos futuros continuam usando o card simples.
   const temFeeds = produto.slug === "acervo-3d-gatos";
+  const temBibliotecaCaes = produto.slug === PRODUTO_CAES_SLUG;
   const fichas = temFeeds ? listarFichas() : [];
   const projetos3d = temFeeds ? listarProjetos3D() : [];
+  const fichasCaes = temBibliotecaCaes
+    ? FICHAS_CAES.map((ficha) => ({
+        numero: ficha.numero,
+        chave: ficha.chave,
+        nome: ficha.nome,
+        categoria: ficha.categoria,
+        href: `/produto/${PRODUTO_CAES_SLUG}/projeto/${ficha.chave}`,
+        capa: `/api/conteudo-caes/capa/${ficha.chave}`,
+        miniatura: `/api/conteudo-caes/miniatura/${ficha.chave}`,
+      }))
+    : [];
 
   return (
     <main className="envolucro">
@@ -74,6 +88,21 @@ export default async function PaginaProduto({
             Conteúdo principal
           </h2>
           <AbasConteudo fichas={fichas} projetos3d={projetos3d} />
+        </section>
+      ) : temBibliotecaCaes ? (
+        <section className="prodSecao" aria-labelledby="prod-principal">
+          <div className="prodSecaoTopoComAcao">
+            <h2 id="prod-principal" className="prodRotulo">
+              Os {fichasCaes.length} projetos
+            </h2>
+            <Link
+              className="fichaBotaoSecundario"
+              href={`/produto/${PRODUTO_CAES_SLUG}/fichas`}
+            >
+              Ver só as fichas completas
+            </Link>
+          </div>
+          <GaleriaCaes fichas={fichasCaes} />
         </section>
       ) : (
         principal.length > 0 && (

@@ -50,6 +50,37 @@
   --fonte-medida: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
 }
 
+/* ── Tema escuro: mesmos papéis, valores diferentes. Ativado por
+ * data-theme="dark" na tag <html> (toggle manual, ver tema.tsx), nunca só
+ * por prefers-color-scheme — o usuário pediu um modo preto que se liga,
+ * não uma resposta passiva ao SO. */
+:root[data-theme="dark"] {
+  --fundo: #14171c;
+  --fundo-alt: #1b1f26;
+  --superficie: #1b1f26;
+  --superficie-alta: #232830;
+
+  --texto: #e8eaed;
+  --texto-apoio: #b6bcc6;
+  --texto-fraco: #838c99;
+
+  --borda: #333944;
+  --borda-forte: #4a515e;
+
+  --acao: #f0703a;
+  --acao-forte: #ff9260;
+  --acao-suave: #3a2417;
+  --sobre-acao: #14171c;
+
+  --pronto: #34c07a;
+  --pronto-suave: #163826;
+  --preparando: #e0a63c;
+  --preparando-suave: #3a2c10;
+
+  --sombra: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 12px rgb(0 0 0 / 0.24);
+  --sombra-alta: 0 3px 8px rgb(0 0 0 / 0.32), 0 14px 32px rgb(0 0 0 / 0.4);
+}
+
 * { box-sizing: border-box; }
 
 html, body {
@@ -72,6 +103,12 @@ body::before {
   background-image:
     radial-gradient(circle at 8% 4%, rgb(234 88 12 / 0.06), transparent 28%),
     radial-gradient(circle at 92% 2%, rgb(37 99 235 / 0.05), transparent 26%);
+}
+:root[data-theme="dark"] body::before {
+  opacity: 0.5;
+  background-image:
+    radial-gradient(circle at 8% 4%, rgb(240 112 58 / 0.08), transparent 28%),
+    radial-gradient(circle at 92% 2%, rgb(59 130 246 / 0.06), transparent 26%);
 }
 
 a { color: inherit; text-decoration: none; }

@@ -8,7 +8,7 @@ body:has(.loginPagina) > .iniRodape { display: none; }
 
 .iniTopo {
   border-bottom: 1px solid var(--borda);
-  background: rgb(255 255 255 / 0.94);
+  background: color-mix(in srgb, var(--superficie) 94%, transparent);
   backdrop-filter: saturate(180%) blur(10px);
   position: sticky;
   top: 0;
@@ -47,6 +47,21 @@ body:has(.loginPagina) > .iniRodape { display: none; }
   place-items: center;
   color: var(--sobre-acao);
 }
+.alternarTema {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--texto-apoio);
+  cursor: pointer;
+  transition: border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+}
+.alternarTema:hover { border-color: var(--acao); color: var(--acao-forte); }
+.alternarTema:active { transform: scale(0.94); }
 .iniMarcaTexto { display: flex; flex-direction: column; line-height: 1.15; }
 .iniMarcaSub {
   font-size: 10.5px;
@@ -1304,6 +1319,15 @@ body.tecTelaCheiaAberta { overflow: hidden; }
 }
 .prodVoltar:hover { color: var(--texto); }
 .prodSecao { margin-bottom: 34px; }
+.prodSecaoTopoComAcao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 13px;
+}
+.prodSecaoTopoComAcao .prodRotulo { margin-bottom: 0; }
 .prodRotulo {
   font-size: 12px;
   font-weight: 650;
@@ -1478,6 +1502,21 @@ body.tecTelaCheiaAberta { overflow: hidden; }
   line-height: 1.32;
   color: var(--texto);
 }
+.prodFichaCategoria {
+  margin-top: 2px;
+  color: var(--acao-forte);
+  font: 750 9px var(--fonte-medida);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.prodFichaCapa--caes { aspect-ratio: 3 / 4; background: #fff; }
+.prodFichaCapa--caes picture { display: block; width: 100%; height: 100%; }
+.prodFichaCapa--caes img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .prodFichasVazio {
   font-size: 14px;
   color: var(--texto-apoio);
@@ -1545,6 +1584,67 @@ body.tecTelaCheiaAberta { overflow: hidden; }
   background: var(--superficie);
 }
 .fichaVisor img { width: 100%; height: auto; display: block; }
+
+/* ══ FEED CONTÍNUO DE FICHAS (/produto/[slug]/fichas) ═══════════ */
+.fichasFeedControles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.fichasFeedControlesRotulo {
+  font-size: 12px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--texto-fraco);
+}
+
+.fichasFeedContinuo {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+/* "Feed duplo": duas colunas lado a lado, cada ficha inteira dentro da sua
+ * coluna — ainda é rolagem contínua, só com o dobro de largura útil. */
+.fichasFeedContinuo--col2 {
+  max-width: 1120px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 28px 32px;
+}
+.fichasFeedItemTopo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.fichasFeedItemTitulo {
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.018em;
+  margin: 2px 0 4px;
+}
+.fichasFeedItem .fichaVisor { margin-bottom: 0; }
+.fichasFeedItem:not(:last-child) {
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--borda);
+}
+.fichasFeedContinuo--col2 .fichasFeedItem {
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--borda);
+}
+
+@media (max-width: 760px) {
+  .fichasFeedContinuo--col2 { grid-template-columns: 1fr; }
+}
+
 .fichaAcoes {
   display: flex;
   justify-content: center;
@@ -1589,6 +1689,7 @@ body.tecTelaCheiaAberta { overflow: hidden; }
 /* Biblioteca pesquisável: o volume continua visível, mas deixa de ser uma
  * parede de 100 capas. A densidade é uma preferência do próprio membro. */
 .prodFerramentasBusca { display:grid; grid-template-columns:minmax(220px,1fr) 210px auto auto; align-items:center; gap:10px; margin-bottom:12px; }
+.prodFerramentasBusca--caes { grid-template-columns:minmax(220px,1fr) 240px auto; }
 .prodBusca input, .prodFerramentasBusca select { width:100%; min-height:42px; border:1px solid var(--borda); border-radius:10px; background:#fff; color:var(--texto); padding:9px 12px; font:inherit; font-size:13px; }
 .prodBusca input:focus, .prodFerramentasBusca select:focus { outline:2px solid rgb(234 88 12 / .18); border-color:var(--acao); }
 .prodFiltro3d { display:flex; align-items:center; gap:7px; min-height:42px; padding:0 11px; border:1px solid var(--borda); border-radius:10px; background:#fff; font-size:12px; white-space:nowrap; }
@@ -1661,6 +1762,18 @@ body.tecTelaCheiaAberta { overflow: hidden; }
 .fichaNavLink { display:flex; align-items:center; gap:9px; }
 .fichaNavLink span { display:grid; gap:2px; }
 .fichaNavLink small { color:var(--texto-fraco); font-size:9px; letter-spacing:.07em; text-transform:uppercase; }
+.fichaAvisoTecnico {
+  max-width:900px;
+  margin:0 auto 18px;
+  padding:15px 17px;
+  border:1px solid #ead7bd;
+  border-left:4px solid #d97706;
+  border-radius:12px;
+  background:#fffbeb;
+  color:#714b17;
+}
+.fichaAvisoTecnico strong { display:block; margin-bottom:4px; font-size:12px; }
+.fichaAvisoTecnico p { margin:0; font-size:11.5px; line-height:1.5; }
 
 @media (max-width:800px) {
   .prodFerramentasBusca { grid-template-columns:1fr 1fr; }
@@ -1678,6 +1791,7 @@ body.tecTelaCheiaAberta { overflow: hidden; }
    * a janela. No celular a largura total continua sendo mais confortável. */
   .fichaVisor { height:min(74dvh,820px); display:flex; justify-content:center; background:#f2f3f1; }
   .fichaVisor img { width:auto; max-width:100%; height:100%; object-fit:contain; }
+  .fichaPaginaCaes .fichaVisor { height:min(66dvh,760px); }
 }
 
 @media (max-width:520px) {

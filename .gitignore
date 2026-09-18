@@ -27,6 +27,8 @@ analise-videos/
 # Ferramentas/temporários de otimização e testes
 /_glbtmp/
 /scratchpad/
+/.conteudo-caes/
+/.verificacao/
 
 # --- Modelos 3D: o que o app usa vai pro repo (model.glb otimizado,
 #     preview.png, pecas.bin/json). O resto é backup/saída bruta local. ---
